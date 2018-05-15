@@ -2,15 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../jsmn.h"
+#include <assert.h>
 
 /*
  * A small example of jsmn parsing when JSON structure is known and number of
  * tokens is predictable.
  */
 
+
 static const char *JSON_STRING =
 	"{\"user\": \"johndoe\", \"admin\": false, \"uid\": 1000,\n  "
 	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";
+
 
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
@@ -20,11 +23,35 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
+char *readJSONFile() {
+	int count;
+	FILE *fp = fopen("data.json", "r");
+	assert(fp!=NULL);
+	char* JSON_STRING;
+	char oneLine[255];
+	JSON_STRING = (char*)malloc(255);
+	assert(JSON_STRING!=NULL);
+
+	while(1){
+		fgets(oneLine, 255, fp);
+		if(feof(fp)) break;
+		count += strlen(oneLine);
+		JSON_STRING = (char*)realloc(JSON_STRING, count+1);
+		strcat(JSON_STRING, oneLine);
+	}
+	printf("%s", JSON_STRING);
+	fclose(fp);
+	return JSON_STRING;
+}
+
+
 int main() {
 	int i;
 	int r;
 	jsmn_parser p;
 	jsmntok_t t[128]; /* We expect no more than 128 tokens */
+
+	readJSONFile();
 
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t)/sizeof(t[0]));

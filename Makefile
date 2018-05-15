@@ -34,7 +34,7 @@ jsondump: example/jsondump.o libjsmn.a
 clean:
 	rm -f *.o example/*.o
 	rm -f *.a *.so
-	rm -f simple_example
+	rm -f myexample1
 	rm -f jsondump
 
 .PHONY: all clean test
