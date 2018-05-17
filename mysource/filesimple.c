@@ -39,11 +39,10 @@ char *readJSONFile() {
 		JSON_STRING = (char*)realloc(JSON_STRING, count+1);
 		strcat(JSON_STRING, oneLine);
 	}
-	printf("%s", JSON_STRING);
+	//printf("%s", JSON_STRING);
 	fclose(fp);
 	return JSON_STRING;
 }
-
 
 int main() {
 	int i;
@@ -51,7 +50,7 @@ int main() {
 	jsmn_parser p;
 	jsmntok_t t[128]; /* We expect no more than 128 tokens */
 
-	readJSONFile();
+	JSON_STRING = readJSONFile();
 
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t)/sizeof(t[0]));
@@ -68,24 +67,24 @@ int main() {
 
 	/* Loop over all keys of the root object */
 	for (i = 1; i < r; i++) {
-		if (jsoneq(JSON_STRING, &t[i], "user") == 0) {
+		if (jsoneq(JSON_STRING, &t[i], "name") == 0) {
 			/* We may use strndup() to fetch string value */
-			printf("- User: %.*s\n", t[i+1].end-t[i+1].start,
+			printf("- name: %.*s\n", t[i+1].end-t[i+1].start,
 					JSON_STRING + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "admin") == 0) {
+		} else if (jsoneq(JSON_STRING, &t[i], "keywords") == 0) {
 			/* We may additionally check if the value is either "true" or "false" */
-			printf("- Admin: %.*s\n", t[i+1].end-t[i+1].start,
+			printf("- keywords: %.*s\n", t[i+1].end-t[i+1].start,
 					JSON_STRING + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "uid") == 0) {
+		} else if (jsoneq(JSON_STRING, &t[i], "description") == 0) {
 			/* We may want to do strtol() here to get numeric value */
 			printf("- UID: %.*s\n", t[i+1].end-t[i+1].start,
 					JSON_STRING + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "groups") == 0) {
+		} else if (jsoneq(JSON_STRING, &t[i], "examples") == 0) {
 			int j;
-			printf("- Groups:\n");
+			printf("- examples:\n");
 			if (t[i+1].type != JSMN_ARRAY) {
 				continue; /* We expect groups to be an array of strings */
 			}
@@ -94,10 +93,10 @@ int main() {
 				printf("  * %.*s\n", g->end - g->start, JSON_STRING + g->start);
 			}
 			i += t[i+1].size + 1;
-		} else {
+		} /*else {
 			printf("Unexpected key: %.*s\n", t[i].end-t[i].start,
 					JSON_STRING + t[i].start);
-		}
+		}*/
 	}
 	return EXIT_SUCCESS;
 }
