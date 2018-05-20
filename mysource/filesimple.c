@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../jsmn.h"
 #include <assert.h>
+#include <stdbool.h>
 
 /*
  * A small example of jsmn parsing when JSON structure is known and number of
@@ -49,23 +50,42 @@ void jsonNameList(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
 			c++;
 		}
 	}
-	printf("***** Name List *******\n");
-	for(i=0; i<c; i++){
-		//printf("[NAME %d] %s\n", i+1, nameList[i]);
+	/*for(i=0; i<c; i++){
+		if(i==0){
+			printf("***** Name List *******\n");
+		}
+		printf("[NAME %d] %s\n", i+1, nameList[i]);
 	}
-	printf("\n");
+	printf("\n");*/
 }
 
 void printNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
 	int i=0, c=0;
-	printf("***** Name List *******\n");
+	/*
 	for(i=0; i<100; i++){
+		if(i==0){
+			printf("***** Name List *******\n");
+		}
 		if(i==nameTokIndex[c]){
 			printf("[NAME %d] %.*s\n", c+1, t[i].end-t[i].start, jsonstr + t[i].start);
 			c++;
 		}
 	}
-	printf("\n");
+	printf("\n");*/
+}
+
+void selectNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
+	int selection,i=0;
+	while(1){
+		printf("select Name's no (exit:0) >> ");
+		scanf(" %d", &selection);
+		if(selection==0){
+			break;
+		} else {
+			printf("[NAME %d] %.*s\n", selection, t[nameTokIndex[selection-1]].end-t[nameTokIndex[selection-1]].start, jsonstr + t[nameTokIndex[selection-1]].start);
+			printf("%.*s\n\n", t[nameTokIndex[selection-1]+1].end-t[nameTokIndex[selection-1]+1].start, jsonstr + t[nameTokIndex[selection-1]+1].start);
+		}
+	}
 }
 
 int main() {
@@ -82,6 +102,7 @@ int main() {
 
 	jsonNameList(JSON_STRING, t, r, nameTokIndex);
 	printNameList(JSON_STRING, t, nameTokIndex);
+	selectNameList(JSON_STRING, t, nameTokIndex);
 
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
