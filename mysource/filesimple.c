@@ -10,11 +10,6 @@
  */
 
 
-static const char *JSON_STRING =
-	"{\"user\": \"johndoe\", \"admin\": false, \"uid\": 1000,\n  "
-	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";
-
-
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
 			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
@@ -44,16 +39,36 @@ char *readJSONFile() {
 	return JSON_STRING;
 }
 
+void jsonNameList(char *jsonstr, jsmntok_t *t, int tokcount){
+	char nameList[100][100];
+	int c=0, i=0;
+	for(i=0; i<tokcount; i++){
+		if(t[i].size>0 && t[i].type==JSMN_STRING){
+			strncpy(nameList[c], jsonstr + t[i].start,  t[i].end-t[i].start);
+			c++;
+		}
+	}
+	printf("***** Name List *******\n");
+	for(i=0; i<c; i++){
+		printf("[NAME %d] %s\n", i+1, nameList[i]);
+	}
+	printf("\n");
+}
+
 int main() {
 	int i;
 	int r;
 	jsmn_parser p;
 	jsmntok_t t[128]; /* We expect no more than 128 tokens */
 
-	JSON_STRING = readJSONFile();
+	char *JSON_STRING = readJSONFile();
 
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t)/sizeof(t[0]));
+
+	jsonNameList(JSON_STRING, t, r);
+
+
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
 		return 1;
