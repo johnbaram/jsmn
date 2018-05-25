@@ -50,18 +50,18 @@ void jsonNameList(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
 			c++;
 		}
 	}
-	/*for(i=0; i<c; i++){
+	for(i=0; i<c; i++){
 		if(i==0){
 			printf("***** Name List *******\n");
 		}
 		printf("[NAME %d] %s\n", i+1, nameList[i]);
 	}
-	printf("\n");*/
+	printf("\n");
 }
 
 void printNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
 	int i=0, c=0;
-	/*
+
 	for(i=0; i<100; i++){
 		if(i==0){
 			printf("***** Name List *******\n");
@@ -71,7 +71,7 @@ void printNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
 			c++;
 		}
 	}
-	printf("\n");*/
+	printf("\n");
 }
 
 void selectNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
@@ -88,6 +88,7 @@ void selectNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
 	}
 }
 
+
 int main() {
 	int i;
 	int r;
@@ -100,9 +101,12 @@ int main() {
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t)/sizeof(t[0]));
 
+
 	jsonNameList(JSON_STRING, t, r, nameTokIndex);
 	printNameList(JSON_STRING, t, nameTokIndex);
 	selectNameList(JSON_STRING, t, nameTokIndex);
+
+
 
 	if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
@@ -114,39 +118,41 @@ int main() {
 		printf("Object expected\n");
 		return 1;
 	}
-
+/*
 	/* Loop over all keys of the root object */
-	for (i = 1; i < r; i++) {
-		if (jsoneq(JSON_STRING, &t[i], "name") == 0) {
+
+/*	for (i = 1; i < r; i++) {
+		if (jsoneq(JSON_STRING, &t[i], "name") == 0) {*/
 			/* We may use strndup() to fetch string value */
+			/*
 			printf("- name: %.*s\n", t[i+1].end-t[i+1].start,
 					JSON_STRING + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "keywords") == 0) {
+		} else if (jsoneq(JSON_STRING, &t[i], "keywords") == 0) {*/
 			/* We may additionally check if the value is either "true" or "false" */
-			printf("- keywords: %.*s\n", t[i+1].end-t[i+1].start,
+			/*printf("- keywords: %.*s\n", t[i+1].end-t[i+1].start,
 					JSON_STRING + t[i+1].start);
 			i++;
-		} else if (jsoneq(JSON_STRING, &t[i], "description") == 0) {
+		} else if (jsoneq(JSON_STRING, &t[i], "description") == 0) {*/
 			/* We may want to do strtol() here to get numeric value */
-			printf("- UID: %.*s\n", t[i+1].end-t[i+1].start,
+			/*printf("- UID: %.*s\n", t[i+1].end-t[i+1].start,
 					JSON_STRING + t[i+1].start);
 			i++;
 		} else if (jsoneq(JSON_STRING, &t[i], "examples") == 0) {
 			int j;
 			printf("- examples:\n");
 			if (t[i+1].type != JSMN_ARRAY) {
-				continue; /* We expect groups to be an array of strings */
-			}
+				continue;*/ /* We expect groups to be an array of strings */
+			/*}
 			for (j = 0; j < t[i+1].size; j++) {
 				jsmntok_t *g = &t[i+j+2];
 				printf("  * %.*s\n", g->end - g->start, JSON_STRING + g->start);
 			}
-			i += t[i+1].size + 1;
-		} /*else {
+			i += t[i+1].size + 1;*/
+		/*}*/ /*else {
 			printf("Unexpected key: %.*s\n", t[i].end-t[i].start,
 					JSON_STRING + t[i].start);
-		}*/
-	}
+		}
+	}*/
 	return EXIT_SUCCESS;
 }
