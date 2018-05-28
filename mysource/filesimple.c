@@ -50,10 +50,8 @@ void jsonNameList(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
 			c++;
 		}
 	}
+	printf("***** Name List *******\n");
 	for(i=0; i<c; i++){
-		if(i==0){
-			printf("***** Name List *******\n");
-		}
 		printf("[NAME %d] %s\n", i+1, nameList[i]);
 	}
 	printf("\n");
@@ -88,10 +86,37 @@ void selectNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
 	}
 }
 
+//added function to solve example8
+void example8List(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
+	int i=0, e=1;
+	printf("***** Object List *******\n");
+	for (i = 1; i < tokcount; i++) { //repeats by the number of the token
+			if (jsoneq(jsonstr, &t[i], "name") == 0) { //true if the token is "name"
+				printf("[Name %d] %.*s\n", e, t[i+1].end-t[i+1].start, jsonstr + t[i+1].start); //print the value
+				e++;
+			}
+		}
+	printf("\n");
+}
+
+//added function to solve example9
+void example9SelectList(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
+	int selection, i=0, e=1;
+	example8List(jsonstr, t, tokcount, nameTokIndex);
+	while(1){
+		printf("원하는 번호 입력 (Exit:0) : ");
+		scanf("%d", &selection);
+		if(selection==0) break;
+		for(e=1+((selection-1)*10); e<=selection*10; e++){
+			printf("\t[%.*s]  ", t[nameTokIndex[e-1]].end-t[nameTokIndex[e-1]].start, jsonstr + t[nameTokIndex[e-1]].start);
+			printf("%.*s\n", t[nameTokIndex[e-1]+1].end-t[nameTokIndex[e-1]+1].start, jsonstr + t[nameTokIndex[e-1]+1].start);
+		}
+		printf("\n\n");
+	}
+}
 
 int main() {
-	int i;
-	int r;
+	int i, r;
 	int nameTokIndex[100];
 	jsmn_parser p;
 	jsmntok_t t[128]; /* We expect no more than 128 tokens */
@@ -101,23 +126,25 @@ int main() {
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t)/sizeof(t[0]));
 
-
 	jsonNameList(JSON_STRING, t, r, nameTokIndex);
-	printNameList(JSON_STRING, t, nameTokIndex);
-	selectNameList(JSON_STRING, t, nameTokIndex);
+	//printNameList(JSON_STRING, t, nameTokIndex);
+	//selectNameList(JSON_STRING, t, nameTokIndex);
+	example9SelectList(JSON_STRING, t, r, nameTokIndex);
 
+	return EXIT_SUCCESS;
+}
 
-
-	if (r < 0) {
+	/*if (r < 0) {
 		printf("Failed to parse JSON: %d\n", r);
 		return 1;
-	}
+	}/*
 
 	/* Assume the top-level element is an object */
-	if (r < 1 || t[0].type != JSMN_OBJECT) {
+	/*if (r < 1 || t[0].type != JSMN_OBJECT) {
 		printf("Object expected\n");
 		return 1;
-	}
+	}*/
+
 /*
 	/* Loop over all keys of the root object */
 
@@ -154,5 +181,3 @@ int main() {
 					JSON_STRING + t[i].start);
 		}
 	}*/
-	return EXIT_SUCCESS;
-}
