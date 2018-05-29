@@ -21,7 +21,9 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 
 char *readJSONFile() {
 	int count;
-	FILE *fp = fopen("data.json", "r");
+	//FILE *fp = fopen("data.json", "r");
+	FILE *fp = fopen("data2.json", "r");
+	//FILE *fp = fopen("data3.json", "r");
 	assert(fp!=NULL);
 	char* JSON_STRING;
 	char oneLine[255];
@@ -38,23 +40,6 @@ char *readJSONFile() {
 	//printf("%s", JSON_STRING);
 	fclose(fp);
 	return JSON_STRING;
-}
-
-void jsonNameList(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
-	char nameList[100][100];
-	int c=0, i=0;
-	for(i=0; i<tokcount; i++){
-		if(t[i].size>0 && t[i].type==JSMN_STRING){
-			strncpy(nameList[c], jsonstr + t[i].start,  t[i].end-t[i].start);
-			nameTokIndex[c]=i;
-			c++;
-		}
-	}
-	printf("***** Name List *******\n");
-	for(i=0; i<c; i++){
-		printf("[NAME %d] %s\n", i+1, nameList[i]);
-	}
-	printf("\n");
 }
 
 void printNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
@@ -90,8 +75,9 @@ void selectNameList(char *jsonstr, jsmntok_t *t, int *nameTokIndex){
 void example8List(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
 	int i=0, e=1;
 	printf("***** Object List *******\n");
-	for (i = 1; i < tokcount; i++) { //repeats by the number of the token
-			if (jsoneq(jsonstr, &t[i], "name") == 0) { //true if the token is "name"
+	for (i = 0; i < tokcount; i++) { //repeats by the number of the token
+			//if (jsoneq(jsonstr, &t[i], "name") == 0) { //true if the token is "name"
+			if(t[i].type==JSMN_STRING && t[i].size>0){ //토큰의 타입의 스트링이면서 토큰의 parent가 전체이면(depth가 1이다.)
 				printf("[Name %d] %.*s\n", e, t[i+1].end-t[i+1].start, jsonstr + t[i+1].start); //print the value
 				e++;
 			}
@@ -99,17 +85,46 @@ void example8List(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
 	printf("\n");
 }
 
+void printtoken(const char *JSON_STRING, jsmntok_t *t, int count){
+   int i=0;
+   for(i=0; i<count; i++){
+   printf("index: [%2d] start&end{%d, %d} size <%d> type '%d' %.*s\n", i, t[i].start, t[i].end, t[i].size, t[i].type, t[i].end-t[i].start,
+         JSON_STRING + t[i].start);
+      }
+}
+
+void jsonNameList(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
+	char nameList[100][100];
+	int c=0, i=0;
+	for(i=0; i<tokcount; i++){
+		if(t[i].size>0 && t[i].type == JSMN_STRING){
+			if(t[i].parent==0){
+				strncpy(nameList[c], jsonstr + t[i].start,  t[i].end-t[i].start);
+				nameTokIndex[c]=i;
+				c++;
+			}
+		}
+	}
+	/*printf("***** Name List *******\n");
+	for(i=0; i<c; i++){
+		printf("[NAME %d] %s\n", i+1, nameList[i]);
+	}*/
+	printf("\n");
+}
+
 //added function to solve example9
 void example9SelectList(char *jsonstr, jsmntok_t *t, int tokcount, int *nameTokIndex){
 	int selection, i=0, e=1;
-	example8List(jsonstr, t, tokcount, nameTokIndex);
+	int *selectList = (int *)malloc(sizeof(int));
 	while(1){
 		printf("원하는 번호 입력 (Exit:0) : ");
 		scanf("%d", &selection);
 		if(selection==0) break;
-		for(e=1+((selection-1)*10); e<=selection*10; e++){
-			printf("\t[%.*s]  ", t[nameTokIndex[e-1]].end-t[nameTokIndex[e-1]].start, jsonstr + t[nameTokIndex[e-1]].start);
-			printf("%.*s\n", t[nameTokIndex[e-1]+1].end-t[nameTokIndex[e-1]+1].start, jsonstr + t[nameTokIndex[e-1]+1].start);
+		while(1){
+			i=selection;
+			printf("%.*s = ", t[i].end-t[i].start, jsonstr + t[i].start);
+			printf(" %.*s \n", t[i+1].end-t[i+1].start, jsonstr + t[i+1].start);
+			break;
 		}
 		printf("\n\n");
 	}
@@ -126,10 +141,12 @@ int main() {
 	jsmn_init(&p);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t)/sizeof(t[0]));
 
+	//printtoken(JSON_STRING, t, r);
 	jsonNameList(JSON_STRING, t, r, nameTokIndex);
 	//printNameList(JSON_STRING, t, nameTokIndex);
 	//selectNameList(JSON_STRING, t, nameTokIndex);
-	example9SelectList(JSON_STRING, t, r, nameTokIndex);
+	example8List(JSON_STRING, t, r, nameTokIndex);
+	//example9SelectList(JSON_STRING, t, r, nameTokIndex);
 
 	return EXIT_SUCCESS;
 }
