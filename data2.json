@@ -1,66 +1,66 @@
 [
-{
-  "name": "(1)jsmn",
-  "keywords": "(1)json",
-  "description": "(1)Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
-  "repository":
   {
-    "type": "(1)git",
-    "url": "(1)https://github.com/zserge/jsmn.git"
+    "name": "(1)jsmn",
+    "keywords": "(1)json",
+    "description": "(1)Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
+    "repository":
+    {
+      "type": "(1)git",
+      "url": "(1)https://github.com/zserge/jsmn.git"
+    },
+    "frameworks": "(1)*",
+    "platforms": "(1)*",
+    "examples": [
+      "(1)example/*.c"
+    ],
+    "exclude": "(1)test"
   },
-  "frameworks": "(1)*",
-  "platforms": "(1)*",
-  "examples": [
-    "(1)example/*.c"
-  ],
-  "exclude": "(1)test"
-},
-{
-  "name": "(2)jsmn",
-  "keywords": "(2)json",
-  "description": "(2)Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
-  "repository":
   {
-    "type": "(2)git",
-    "url": "(2)https://github.com/zserge/jsmn.git"
+    "name": "(2)jsmn",
+    "keywords": "(2)json",
+    "description": "(2)Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
+    "repository":
+    {
+      "type": "(2)git",
+      "url": "(2)https://github.com/zserge/jsmn.git"
+    },
+    "frameworks": "(2)*",
+    "platforms": "(2)*",
+    "examples": [
+      "(2)example/*.c"
+    ],
+    "exclude": "(2)test"
   },
-  "frameworks": "(2)*",
-  "platforms": "(2)*",
-  "examples": [
-    "(2)example/*.c"
-  ],
-  "exclude": "(2)test"
-},
-{
-  "name": "(3)jsmn",
-  "keywords": "(3)json",
-  "description": "(3)Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
-  "repository":
   {
-    "type": "(3)git",
-    "url": "(3)https://github.com/zserge/jsmn.git"
+    "name": "(3)jsmn",
+    "keywords": "(3)json",
+    "description": "(3)Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
+    "repository":
+    {
+      "type": "(3)git",
+      "url": "(3)https://github.com/zserge/jsmn.git"
+    },
+    "frameworks": "(3)*",
+    "platforms": "(3)*",
+    "examples": [
+      "(3)example/*.c"
+    ],
+    "exclude": "(3)test"
   },
-  "frameworks": "(3)*",
-  "platforms": "(3)*",
-  "examples": [
-    "(3)example/*.c"
-  ],
-  "exclude": "(3)test"
-},
-{
-  "name": "(4)jsmn",
-  "keywords": "(4))json",
-  "description": "(4)Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
-  "repository":
   {
-    "type": "(4)git",
-    "url": "(4)https://github.com/zserge/jsmn.git"
-  },
-  "frameworks": "(4)*",
-  "platforms": "(4)*",
-  "examples": [
-    "(4)example/*.c"
-  ],
-  "exclude": "(4)test"
-}
+    "name": "(4)jsmn",
+    "keywords": "(4))json",
+    "description": "(4)Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
+    "repository":
+    {
+      "type": "(4)git",
+      "url": "(4)https://github.com/zserge/jsmn.git"
+    },
+    "frameworks": "(4)*",
+    "platforms": "(4)*",
+    "examples": [
+      "(4)example/*.c"
+    ],
+    "exclude": "(4)test"
+  }
 ]
