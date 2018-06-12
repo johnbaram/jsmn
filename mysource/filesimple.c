@@ -21,9 +21,7 @@ typedef struct{
 char *readJsonFile(FILE *fp){
   int count;
 	char filename[30];
-	//FILE *fp;
-
-  /*while(1){
+  while(1){
 		printf("Input filename: ");
 		scanf("%s", filename);
 		strcat(fileName, ".json");
@@ -34,10 +32,6 @@ char *readJsonFile(FILE *fp){
 			break;
 		}
 	}
-  */
-  fp = fopen("data3.json", "r");
-  if(fp==NULL) printf("FILE IS NULL\n");
-
   char* JSON_STRING;
   char oneLine[255];
   JSON_STRING = (char*)malloc(255);
@@ -138,7 +132,6 @@ void printProduct(product_t *prod[], int pcount){
    printf("번호\t제품명\t제조사\t가격\t개수\t총가격\n");
    printf("*************************************************\n");
    for( i =0; i<pcount; i++){
-     //printf("%s  ", compName);
      change(prod[i]->comp, compName);
      printf("%d\t%s\t\t%s\t%d\t%d\t%d\n", i+1, prod[i]->name, compName, prod[i]->price, prod[i]->count, prod[i]->count*prod[i]->price);
    }
